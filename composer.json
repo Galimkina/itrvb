@@ -1,0 +1,20 @@
+{
+    "name": "itrvb/galimova",
+    "autoload": {
+        "psr-4": {
+            "Itrvb\\galimova\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "galimkina",
+            "email": "galimova_nastya2010@mail.ru"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.23"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    }
+}
