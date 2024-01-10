@@ -1,5 +1,5 @@
 <?php
-namespace Itrvb\galimova\Person;
+namespace Itrvb\galimova\Blog;
 
 class Name
 {

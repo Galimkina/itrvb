@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-
 use Itrvb\galimova\Blog\Post;
-use Itrvb\galimova\Person\Person;
-use Itrvb\galimova\Person\Name;
+use Itrvb\galimova\Blog\User;
+use Itrvb\galimova\Blog\Name;
 use Itrvb\galimova\Blog\Comment;
 use Faker\Factory;
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 //spl_autoload_register(function ($class) {
 // 	$file = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
@@ -15,31 +15,24 @@ use Faker\Factory;
 // 	}
 // });
 
-$faker = Factory::create('ru_RU');
-
-$user = new Person(
-    id: $faker->randomNumber(2),
-    name: new Name( $faker->firstName(),  $faker->lastName()),
-    regiseredOn: new DateTimeImmutable()
-);
-$post = new Post(
-    id: $faker->randomNumber(2),
-    author_id:  $faker->randomNumber(2),
-    title: $faker->realText(10),
-    text: $faker->realText
-);
-$comment = new Comment(
-    id: $faker->randomNumber(2),
-    author_id: $faker->randomNumber(2),
-    post_id: $faker->randomNumber(2),
-    text:  $faker->realText
-);
-echo $user."<p>".$post."<p>".$comment;
-
-//$post = new Post(
-//    author: new Person(
-//        name: new Name('Ivan', 'Ivanov'),
-//        regiseredOn: new DateTimeImmutable(),
-//    ),
-//    text: 'Vsem privet',
+//$faker = Factory::create('ru_RU');
+//
+//$user = new User(
+//    uuid: $faker->uuid,
+//    username: $faker->name,
+//    name: new Name( $faker->firstName(),  $faker->lastName()),
 //);
+//$post = new Post(
+//    uuid: $faker->uuid,
+//    author_uuid:  $faker->uuid,
+//    title: $faker->realText(10),
+//    text: $faker->realText
+//);
+//$comment = new Comment(
+//    uuid: $faker->uuid,
+//    author_uuid: $faker->uuid,
+//    post_uuid: $faker->uuid,
+//    text:  $faker->realText
+//);
+//echo $user."<p>".$post."<p>".$comment;
+
