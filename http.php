@@ -1,5 +1,7 @@
 <?php
 use Itrvb\galimova\Blog\Exceptions\HttpException;
+use Itrvb\galimova\Blog\Http\Actions\Likes\CreateLike;
+use Itrvb\galimova\Blog\Http\Actions\Likes\CreateLikeComment;
 use Itrvb\galimova\Blog\Http\Actions\Posts\DeletePost;
 use Itrvb\galimova\Blog\Http\Actions\Posts\CreatePost;
 use Itrvb\galimova\Blog\Http\Actions\Users\CreateUser;
@@ -34,6 +36,9 @@ $routes = [
         '/users/create' => CreateUser::class,
         '/posts/create' => CreatePost::class,
         '/comments/create' => CreateComment::class,
+        '/likes/create' => CreateLike::class,
+        '/likesComment/create' => CreateLikeComment::class,
+
     ],
     'DELETE' => [
         '/posts/delete' => DeletePost::class,
