@@ -12,12 +12,14 @@ use Itrvb\galimova\Blog\Post;
 use Itrvb\galimova\Blog\Repositories\PostsRepository\PostsRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreatePost implements ActionInterface
 {
     public function __construct(
         private PostsRepositoryInterface $postsRepository,
-        private UserRepositoryInterface $userRepository)
+        private UserRepositoryInterface $userRepository,
+        private LoggerInterface $logger)
     {
     }
 
@@ -40,6 +42,8 @@ class CreatePost implements ActionInterface
         }
 
         $this->postsRepository->save($post);
+
+        $this->logger->info("Post created: $newPostUuid");
 
         return new SuccessfulResponse([
             'uuid' => (string)$newPostUuid,

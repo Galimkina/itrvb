@@ -13,13 +13,15 @@ use Itrvb\galimova\Blog\Repositories\LikesRepository\LikesCommentRepositoryInter
 use Itrvb\galimova\Blog\Repositories\CommentsRepository\CommentsRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreateLikeComment implements ActionInterface
 {
     public function __construct(
         private LikesCommentRepositoryInterface $likesCommentRepository,
         private UserRepositoryInterface $userRepository,
-        private CommentsRepositoryInterface $commentsRepository)
+        private CommentsRepositoryInterface $commentsRepository,
+        private LoggerInterface $logger)
     {
     }
 
@@ -44,6 +46,8 @@ class CreateLikeComment implements ActionInterface
         }
 
         $this->likesCommentRepository->save($likeComment);
+
+        $this->logger->info("Like comment created: $newLikeCommentUuid");
 
         return new SuccessfulResponse([
             'uuid' => (string)$newLikeCommentUuid,

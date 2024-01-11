@@ -11,6 +11,10 @@ use Itrvb\galimova\Blog\Repositories\UserRepository\SqliteUsersRepository;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\CommentsRepository\SqliteCommentRepository;
 use Itrvb\galimova\Blog\Repositories\CommentsRepository\CommentsRepositoryInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -24,5 +28,16 @@ $container->bind(CommentsRepositoryInterface::class, SqliteCommentRepository::cl
 $container->bind(LikesRepositoryInterface::class, SqliteLikeRepository::class);
 $container->bind(LikesCommentRepositoryInterface::class, SqliteLikeCommentRepository::class);
 
+$logger = (new Logger('blog'));
+
+$container->bind(LoggerInterface::class, $logger
+    ->pushHandler(new StreamHandler(__DIR__ . '/logs/blog.log'))
+    ->pushHandler(new StreamHandler(
+        __DIR__ . '/logs/blog.error.log',
+        level: Level::Error,
+        bubble: false
+    ))
+    ->pushHandler(new StreamHandler("php://stdout"))
+);
 
 return $container;

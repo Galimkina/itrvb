@@ -10,11 +10,13 @@ use Itrvb\galimova\Blog\Http\Request;
 use Itrvb\galimova\Blog\Http\Response;
 use Itrvb\galimova\Blog\Http\SuccessfulResponse;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 class FindByUsername implements ActionInterface
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository)
+        private UserRepositoryInterface $userRepository,
+        private LoggerInterface $logger)
     {
 
     }
@@ -29,14 +31,16 @@ class FindByUsername implements ActionInterface
 
         try {
             $user = $this->userRepository->getByUsername($username);
+        } catch (UserNotFoundException $error) {
+            return new ErrorResponse($error->getMessage());
+        }
+
+        $this->logger->info("User find: $username");
 
             return new SuccessfulResponse([
                 'username' => $user->username,
                 'first_name' => $user->name->firstName,
                 'last_name' => $user->name->lastName,
             ]);
-        } catch (UserNotFoundException $error) {
-            return new ErrorResponse($error->getMessage());
-        }
     }
 }

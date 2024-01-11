@@ -13,13 +13,15 @@ use Itrvb\galimova\Blog\Repositories\LikesRepository\LikesRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\PostsRepository\PostsRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreateLike implements ActionInterface
 {
     public function __construct(
         private LikesRepositoryInterface $likesRepository,
         private UserRepositoryInterface $userRepository,
-        private PostsRepositoryInterface $postsRepository)
+        private PostsRepositoryInterface $postsRepository,
+        private LoggerInterface $logger)
     {
     }
 
@@ -44,6 +46,8 @@ class CreateLike implements ActionInterface
         }
 
         $this->likesRepository->save($like);
+
+        $this->logger->info("Like created: $newLikeUuid");
 
         return new SuccessfulResponse([
             'uuid' => (string)$newLikeUuid,

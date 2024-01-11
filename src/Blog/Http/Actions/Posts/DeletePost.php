@@ -11,12 +11,15 @@ use Itrvb\galimova\Blog\Repositories\PostsRepository\PostsRepositoryInterface;
 use Itrvb\galimova\Blog\UUID;
 use Itrvb\galimova\Blog\Http\ErrorResponse;
 use Itrvb\galimova\Blog\Http\SuccessfulResponse;
+use Psr\Log\LoggerInterface;
 
 class DeletePost implements ActionInterface
 {
     public function __construct(
-        private PostsRepositoryInterface $postsRepository
-    ) { }
+        private PostsRepositoryInterface $postsRepository,
+//        private LoggerInterface $logger)
+    ) {
+    }
 
     public function handle(Request $request): Response
     {
@@ -29,5 +32,6 @@ class DeletePost implements ActionInterface
         } catch (HttpException | PostNotFoundException $e) {
             return new ErrorResponse($e->getMessage());
         }
+//        $this->logger->info("User created: $newUserUuid");
     }
 }

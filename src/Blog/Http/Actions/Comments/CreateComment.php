@@ -13,13 +13,15 @@ use Itrvb\galimova\Blog\Repositories\CommentsRepository\CommentsRepositoryInterf
 use Itrvb\galimova\Blog\Repositories\PostsRepository\PostsRepositoryInterface;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreateComment implements ActionInterface
 {
     public function __construct(
         private CommentsRepositoryInterface $commentsRepository,
         private UserRepositoryInterface $userRepository,
-        private PostsRepositoryInterface $postsRepository)
+        private PostsRepositoryInterface $postsRepository,
+        private LoggerInterface $logger)
     {
     }
 
@@ -45,6 +47,8 @@ class CreateComment implements ActionInterface
         }
 
         $this->commentsRepository->save($comment);
+
+        $this->logger->info("User created: $newCommentUuid");
 
         return new SuccessfulResponse([
             'uuid' => (string)$newCommentUuid,

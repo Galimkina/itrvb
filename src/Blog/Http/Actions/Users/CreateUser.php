@@ -12,11 +12,13 @@ use Itrvb\galimova\Blog\Name;
 use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\User;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreateUser implements ActionInterface
 {
     public function __construct(
-        private UserRepositoryInterface $usersRepository)
+        private UserRepositoryInterface $usersRepository,
+        private LoggerInterface $logger)
     {
     }
 
@@ -38,6 +40,8 @@ class CreateUser implements ActionInterface
         }
 
         $this->usersRepository->save($user);
+
+        $this->logger->info("User created: $newUserUuid");
 
         return new SuccessfulResponse([
             'uuid' => (string)$newUserUuid
