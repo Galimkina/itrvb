@@ -46,9 +46,9 @@ class SqliteCommentRepository implements CommentsRepositoryInterface
 
         return new Comment(
             new UUID($result['uuid']),
-            $result['author_uuid'],
-            $result['post_uuid'],
-            $result['text']
+            new UUID($result['author_uuid']),
+            new UUID($result['post_uuid']),
+            $result['textx']
         );
     }
 }
