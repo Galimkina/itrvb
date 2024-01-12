@@ -14,6 +14,7 @@ use Itrvb\galimova\Blog\Repositories\UserRepository\UserRepositoryInterface;
 use Itrvb\galimova\Blog\Name;
 use Itrvb\galimova\Blog\User;
 use Itrvb\galimova\Blog\UUID;
+use Psr\Log\LoggerInterface;
 
 class CreatePostTest extends TestCase {
     public function testSuccessResponse() {
@@ -27,8 +28,9 @@ class CreatePostTest extends TestCase {
         $postsRepository = $this->createMock(PostsRepositoryInterface::class);
         $postsRepository->expects($this->once())
             ->method('save');
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $createPosts = new CreatePost($postsRepository, $userRepository);
+        $createPosts = new CreatePost($postsRepository, $userRepository, $logger);
 
         $request = new Request([], [], '{
             "author_uuid": "dada55c2-b9a4-4b2f-aa60-a4139b544093",
@@ -43,8 +45,9 @@ class CreatePostTest extends TestCase {
     public function testInvalidUuidFormat() {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
         $postsRepository = $this->createMock(PostsRepositoryInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $createPosts = new CreatePost($postsRepository, $userRepository);
+        $createPosts = new CreatePost($postsRepository, $userRepository,$logger);
 
         $request = new Request([], [], '{
             "author_uuid": "dada55c2-b9a4-4b2f-aa60-a4139b5440",
@@ -59,10 +62,11 @@ class CreatePostTest extends TestCase {
     public function testNotFoundUserByUuid() {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
         $userRepository->method('get')->willThrowException(new UserNotFoundException());
+        $logger = $this->createMock(LoggerInterface::class);
 
         $postsRepository = $this->createMock(PostsRepositoryInterface::class);
 
-        $createPosts = new CreatePost($postsRepository, $userRepository);
+        $createPosts = new CreatePost($postsRepository, $userRepository, $logger);
 
         $request = new Request([], [], '{
             "author_uuid": "dada55c2-b9a4-4b2f-aa60-a4139b544090",
@@ -77,8 +81,9 @@ class CreatePostTest extends TestCase {
     public function testNotAllData() {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
         $postsRepository = $this->createMock(PostsRepositoryInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $createPosts = new CreatePost($postsRepository, $userRepository);
+        $createPosts = new CreatePost($postsRepository, $userRepository,$logger);
 
         $request = new Request([], [], '{
             "author_uuid": "dada55c2-b9a4-4b2f-aa60-a4139b544093",
